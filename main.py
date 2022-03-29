@@ -1,3 +1,13 @@
+# Integrantes:
+# - Carolina González Martín
+# - Pedro Anstonio Trinidad Becerra Nieves
+# - Marco Servín de la Torre
+# ------------------------------------------
+# Sistemas concurrentes y distribuidos
+# ------------------------------------------
+# Problema de santa claus con programación concurrente.
+
+# Librerías necesarias. #
 import threading
 from time import sleep
 import tkinter
@@ -20,19 +30,18 @@ elfs_mutex = threading.Semaphore()
 # Inicialización de la interfaz gráfica
 App = tkinter.Tk()
 App.title("Santa Claus 🎅")
-App.geometry("700x350")
-# App["background"] = "#343a40"
+App.geometry("910x450")
 
 # Se cargan las impagenes de los duendes.
-elf_img = ImageTk.PhotoImage(Image.open("res/si.png"))
+elf_img = ImageTk.PhotoImage(Image.open("res/elf.png"))
 
 # Se cargan las imagenes de los renos.
-reindeer_img = ImageTk.PhotoImage(Image.open("res/si.png"))
+reindeer_img = ImageTk.PhotoImage(Image.open("res/reindeer.png"))
 
 # Se cargan las imagenes para santa.
-santa_zzz_img = ImageTk.PhotoImage(Image.open("res/si.png"))
-santa_work_img = ImageTk.PhotoImage(Image.open("res/si.png"))
-santa_sled = ImageTk.PhotoImage(Image.open("res/si.png"))
+santa_zzz_img = ImageTk.PhotoImage(Image.open("res/santa_zzz.png"))
+santa_work_img = ImageTk.PhotoImage(Image.open("res/santa_work.png"))
+santa_sled = ImageTk.PhotoImage(Image.open("res/sled.png"))
 
 # Imégen en la app correspondiente a los duendes.
 elf_gui = tkinter.Label(App, image = elf_img)
@@ -40,41 +49,41 @@ elf_gui.grid(row = 0, column = 0)
 
 # Etiqueta del conteo de duendes.
 elfs_cont = tkinter.StringVar()
-elf_lb = tkinter.Label(App, textvariable = elfs_cont).grid(row = 1, column = 0)
+elf_lb = tkinter.Label(App, textvariable = elfs_cont, font=('Noto', 15)).grid(row = 1, column = 0)
 
 
 # Imágen en la app correspondiente a los renos.
 reindeer_gui = tkinter.Label(App, image = reindeer_img)
-reindeer_gui.grid(row = 0, column = 1)
+reindeer_gui.grid(row = 0, column = 2)
 
 # Etiquwta del conteo de renos.
 reindeer_cont = tkinter.StringVar()
-reindeer_lb = tkinter.Label(App, textvariable = reindeer_cont).grid(row = 1, column = 2)
+reindeer_lb = tkinter.Label(App, textvariable = reindeer_cont, font=('Noto', 15)).grid(row = 1, column = 2)
 
 # Imagen de santa.
 santa_gui = tkinter.Label(App, image = santa_zzz_img)
-santa_gui.grid(row = 0, column = 2, sticky="nsew")
+santa_gui.grid(row = 0, column = 1, sticky="nsew")
 
 # Etiqueta del estado de santa
 santa_state = tkinter.StringVar()
-santa_lb = tkinter.Label(App, textvariable = santa_state).grid(row = 1, column = 1)
+santa_lb = tkinter.Label(App, textvariable = santa_state, font=('Noto', 15)).grid(row = 1, column = 1)
 
 # -------------------- Funciones para modificar la interfaz grafica. -------------------- #
 
 # Función para atender a los procesos renos.
 def prepare_sled() -> None:
     santa_gui.configure(image = santa_sled)
-    santa_state.set("Preparando trineo")
+    santa_state.set("Santa:\nPreparando trineo")
 
 # Función para definir que los regalos se repartieron.
 def help_to_elfs() -> None:
     santa_gui.configure(image = santa_work_img)
-    santa_state.set("Trabajando")
+    santa_state.set("Santa:\nTrabajando")
 
 # Función para domir a santa.
 def back_to_sleep() -> None:
-    elf_gui.configure(image = santa_zzz_img)
-    santa_state.set("Dormido")
+    santa_gui.configure(image = santa_zzz_img)
+    santa_state.set("Santa:\nDormido")
 
 # Función para el proceso de santa claus. #
 def santa_process() -> None:

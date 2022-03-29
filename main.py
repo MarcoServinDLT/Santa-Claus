@@ -1,9 +1,9 @@
-from ctypes import resize
-import tkinter
 import threading
-from PIL import ImageTk, Image
 from time import sleep
+import tkinter
+from PIL import ImageTk, Image
 
+# -------------------- Variables -------------------- #
 # Variabes globales y semafóros. #
 MAX_ELFS = 3
 MAX_REINDEERS = 7
@@ -15,13 +15,24 @@ mutex = threading.Semaphore()
 santa_sem = threading.Semaphore()
 elfs_mutex = threading.Semaphore()
 
+# -------------------- Interfaz -------------------- #
+
 # Inicialización de la interfaz gráfica
 App = tkinter.Tk()
 App.title("Santa Claus 🎅")
 App.geometry("700x350")
+# App["background"] = "#343a40"
 
 # Se cargan las impagenes de los duendes.
-elf_img = ImageTk.PhotoImage(Image.open("res/santa.jpg"))
+elf_img = ImageTk.PhotoImage(Image.open("res/si.png"))
+
+# Se cargan las imagenes de los renos.
+reindeer_img = ImageTk.PhotoImage(Image.open("res/si.png"))
+
+# Se cargan las imagenes para santa.
+santa_zzz_img = ImageTk.PhotoImage(Image.open("res/si.png"))
+santa_work_img = ImageTk.PhotoImage(Image.open("res/si.png"))
+santa_sled = ImageTk.PhotoImage(Image.open("res/si.png"))
 
 # Imégen en la app correspondiente a los duendes.
 elf_gui = tkinter.Label(App, image = elf_img)
@@ -32,44 +43,58 @@ elfs_cont = tkinter.StringVar()
 elf_lb = tkinter.Label(App, textvariable = elfs_cont).grid(row = 1, column = 0)
 
 
-# -------------------- Funciones para modificar la interfaz grafica. -------------------- #
+# Imágen en la app correspondiente a los renos.
+reindeer_gui = tkinter.Label(App, image = reindeer_img)
+reindeer_gui.grid(row = 0, column = 1)
 
-# Función de solicitud de ayuda de los duendes.
-def elfs_get_help() -> None:
-    pass
+# Etiquwta del conteo de renos.
+reindeer_cont = tkinter.StringVar()
+reindeer_lb = tkinter.Label(App, textvariable = reindeer_cont).grid(row = 1, column = 2)
+
+# Imagen de santa.
+santa_gui = tkinter.Label(App, image = santa_zzz_img)
+santa_gui.grid(row = 0, column = 2, sticky="nsew")
+
+# Etiqueta del estado de santa
+santa_state = tkinter.StringVar()
+santa_lb = tkinter.Label(App, textvariable = santa_state).grid(row = 1, column = 1)
+
+# -------------------- Funciones para modificar la interfaz grafica. -------------------- #
 
 # Función para atender a los procesos renos.
 def prepare_sled() -> None:
-    pass
+    santa_gui.configure(image = santa_sled)
+    santa_state.set("Preparando trineo")
 
 # Función para definir que los regalos se repartieron.
-def gifts() -> None:
-    pass
+def help_to_elfs() -> None:
+    santa_gui.configure(image = santa_work_img)
+    santa_state.set("Trabajando")
 
 # Función para domir a santa.
 def back_to_sleep() -> None:
-    elf_gui.configure(image = ches_img)
+    elf_gui.configure(image = santa_zzz_img)
+    santa_state.set("Dormido")
 
 # Función para el proceso de santa claus. #
 def santa_process() -> None:
     global reindeers, MAX_REINDEERS, elfs, MAX_ELFS
-    print("El santa se anda échando una jeta...")
     while True:
         santa_sem.acquire()
         mutex.acquire()
         if reindeers == MAX_REINDEERS:
-            print("Preparando trineo...")
+            prepare_sled()
             # Liberación de los procesos de los renos.
             while reindeers:
                 reindeers -= 1
                 reindeer_sem.release()
-            sleep(3)
+                sleep(2)
         elif elfs == MAX_ELFS:
-            print("Santa ayuda a los duendes...")
+            help_to_elfs()
             # Liberación de los duendes.
             while elfs:
                 elfs -= 1
-                sleep(1)
+                sleep(3)
             sleep(1)
         mutex.release()
         back_to_sleep()
@@ -87,7 +112,7 @@ def elf_process() -> None:
             elfs_mutex.release()
         mutex.release()
         elfs_cont.set(f"{elfs} Duendes trabajando")
-        sleep(1)
+        sleep(3)
         mutex.acquire()
         if not elfs:
             elfs_mutex.release()
@@ -103,7 +128,7 @@ def reindeer_process() -> None:
         if reindeers == MAX_REINDEERS:
             santa_sem.release()
         mutex.release()
-        print('total de renos:', reindeers)
+        reindeer_cont.set(f"{reindeers} Renos")
         reindeer_sem.acquire()
         sleep(1)
 

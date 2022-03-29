@@ -3,6 +3,8 @@ Solución al problema de Santa Claus con programación concurrente.
 
 **¡¡El programa cuenta con interfaz gráfica!!**
 
+----
+
 ## ¿Cómo funciona?
 
 ## Requisitos⚙️
